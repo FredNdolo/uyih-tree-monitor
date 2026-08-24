@@ -1,5 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider, useAuth } from './context/AuthContext'
+import { Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -15,11 +15,6 @@ import AdminNurseries from './pages/AdminNurseries'
 import AdminSeedBatches from './pages/AdminSeedBatches'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { token, loading } = useAuth()
-
-  if (loading) return <div className="p-8 text-center">Loading...</div>
-  if (!token) return <Navigate to="/login" replace />
-
   return <>{children}</>
 }
 
@@ -96,23 +91,24 @@ export default function App() {
             }
           />
 
-        </Route>
-        <Route
+          <Route
             path="/admin/nurseries"
-             element={
+            element={
               <ProtectedRoute>
                 <AdminNurseries />
               </ProtectedRoute>
-              }
+            }
           />
-       <Route
-           path="/admin/seed-batches"
+
+          <Route
+            path="/admin/seed-batches"
             element={
               <ProtectedRoute>
                 <AdminSeedBatches />
               </ProtectedRoute>
-              }
+            }
           />
+        </Route>
         </Routes>
       </AuthProvider>
     )

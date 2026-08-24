@@ -8,9 +8,18 @@ export type AuthRequest = Omit<Request, 'user'> & { user?: JwtPayload };
  * Requires a valid JWT in the Authorization header:
  *   Authorization: Bearer <token>
  */
-export const requireAuth: RequestHandler = (req, res, next) => {
-  const authReq = req as AuthRequest;
-  const header = authReq.headers.authorization;
+export function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
+  // Exhibition / demo: skip JWT and act as admin
+  if (process.env.EXHIBITION_MODE === 'true') {
+    req.user = {
+      userId: process.env.EXHIBITION_USER_ID || '00000000-0000-0000-0000-000000000001',
+      email: 'exhibit@uyih.local',
+      role: 'admin',
+    };
+    return next();
+  }
+
+  const header = req.headers.authorization;
 
   if (!header || !header.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Missing or invalid Authorization header' });
@@ -20,12 +29,12 @@ export const requireAuth: RequestHandler = (req, res, next) => {
 
   try {
     const payload = verifyToken(token);
-    authReq.user = payload;
+    req.user = payload;
     next();
   } catch {
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
-};
+}
 
 /**
  * Requires the user to have one of the allowed roles.

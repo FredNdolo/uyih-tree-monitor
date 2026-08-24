@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 
 export default function Home() {
-  const { token } = useAuth()
-
   return (
     <div className="space-y-16 pb-12">
       {/* Hero */}
@@ -20,21 +17,12 @@ export default function Home() {
           carbon programs — can trust the data.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          {token ? (
-            <Link
-              to="/dashboard"
-              className="bg-uyih-green hover:bg-uyih-green-dark text-white px-6 py-3 rounded-lg font-medium"
-            >
-              Open dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="bg-uyih-orange hover:bg-uyih-orange-light text-white px-6 py-3 rounded-lg font-medium"
-            >
-              Sign in to the app
-            </Link>
-          )}
+          <Link
+            to="/dashboard"
+            className="bg-uyih-green hover:bg-uyih-green-dark text-white px-6 py-3 rounded-lg font-medium"
+          >
+            Open dashboard
+          </Link>
           <a
             href="https://umoja-youth-impact-hub.vercel.app/"
             target="_blank"
@@ -144,24 +132,15 @@ export default function Home() {
       <section className="text-center">
         <h2 className="text-xl font-bold text-uyih-slate">Ready to monitor trees?</h2>
         <p className="text-slate-600 mt-2 text-sm">
-          Sign in with Google to access the field and admin tools.
+          Head to the dashboard to access the field and admin tools.
         </p>
         <div className="mt-5">
-          {token ? (
-            <Link
-              to="/dashboard"
-              className="inline-block bg-uyih-green hover:bg-uyih-green-dark text-white px-6 py-3 rounded-lg font-medium"
-            >
-              Go to dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className="inline-block bg-uyih-orange hover:bg-uyih-orange-light text-white px-6 py-3 rounded-lg font-medium"
-            >
-              Sign in with Google
-            </Link>
-          )}
+          <Link
+            to="/dashboard"
+            className="inline-block bg-uyih-green hover:bg-uyih-green-dark text-white px-6 py-3 rounded-lg font-medium"
+          >
+            Go to dashboard
+          </Link>
         </div>
       </section>
     </div>
