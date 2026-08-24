@@ -1,21 +1,28 @@
-import { Request, RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { verifyToken, JwtPayload } from '../config/auth';
 
-/** JWT-authenticated request; omits Passport's `user` to avoid type conflicts. */
-export type AuthRequest = Omit<Request, 'user'> & { user?: JwtPayload };
+export interface AuthRequest extends Request {
+  user?: JwtPayload;
+}
+
+function exhibitionUser(): JwtPayload {
+  return {
+    userId: process.env.EXHIBITION_USER_ID || '00000000-0000-0000-0000-000000000001',
+    email: 'exhibit@uyih.local',
+    role: 'admin',
+  };
+}
 
 /**
  * Requires a valid JWT in the Authorization header:
  *   Authorization: Bearer <token>
+ *
+ * When EXHIBITION_MODE=true, skips JWT and injects an admin user
+ * (use a real users.id in EXHIBITION_USER_ID for FK-safe writes).
  */
 export function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
-  // Exhibition / demo: skip JWT and act as admin
   if (process.env.EXHIBITION_MODE === 'true') {
-    req.user = {
-      userId: process.env.EXHIBITION_USER_ID || '00000000-0000-0000-0000-000000000001',
-      email: 'exhibit@uyih.local',
-      role: 'admin',
-    };
+    req.user = exhibitionUser();
     return next();
   }
 
@@ -41,16 +48,21 @@ export function requireAuth(req: AuthRequest, res: Response, next: NextFunction)
  * Must be used after requireAuth.
  *
  * Example: requireRole('admin', 'field_team')
+ *
+ * When EXHIBITION_MODE=true, allows all roles.
  */
-export function requireRole(...allowedRoles: string[]): RequestHandler {
-  return (req, res, next) => {
-    const authReq = req as AuthRequest;
+export function requireRole(...allowedRoles: string[]) {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (process.env.EXHIBITION_MODE === 'true') {
+      req.user = req.user || exhibitionUser();
+      return next();
+    }
 
-    if (!authReq.user) {
+    if (!req.user) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    if (!allowedRoles.includes(authReq.user.role)) {
+    if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
         error: 'Forbidden',
         message: `Requires one of roles: ${allowedRoles.join(', ')}`,
