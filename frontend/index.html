@@ -2,12 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <title>UYIH Tree Monitor has moved</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://umoja-youth-impact-hub.vercel.app/treemonitoringapp" />
+    <meta http-equiv="refresh" content="0; url=https://umoja-youth-impact-hub.vercel.app/treemonitoringapp" />
+    <script>
+      // The Tree Monitor now lives on the UYIH website. Old tree links go to the tree's public page.
+      (function () {
+        var site = 'https://umoja-youth-impact-hub.vercel.app';
+        var m = location.pathname.match(/UYIH-[2-9A-HJ-NP-Z]{6}/i);
+        location.replace(site + (m ? '/t/' + m[0].toUpperCase() : '/treemonitoringapp'));
+      })();
+    </script>
+    <style>body{font-family:system-ui,sans-serif;background:#FAF6EE;color:#1A3C2A;display:grid;place-items:center;min-height:100vh;margin:0;text-align:center;padding:16px}a{color:#C4622D}</style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main>
+      <h1>The UYIH Tree Monitor has moved</h1>
+      <p>It is now part of the Umoja Youth Impact Hub website.</p>
+      <p><a href="https://umoja-youth-impact-hub.vercel.app/treemonitoringapp">Go to the Tree Monitor →</a></p>
+    </main>
   </body>
 </html>

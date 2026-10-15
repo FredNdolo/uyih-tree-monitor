@@ -1,5 +1,21 @@
 # UYIH Tree Monitoring App (Green Futures Initiative)
 
+> **This app has moved.** As of October 2026 the Tree Monitor is part of the UYIH website and runs on the website's Supabase project.
+>
+> - Public page: https://umoja-youth-impact-hub.vercel.app/treemonitoringapp
+> - Field app (UYIH field team, inside the member area): https://umoja-youth-impact-hub.vercel.app/me/trees
+> - Public tree pages (what a QR label opens): `https://umoja-youth-impact-hub.vercel.app/t/UYIH-XXXXXX`
+> - Code: [`FredNdolo/Umoja-Youth-Impact-Hub`](https://github.com/FredNdolo/Umoja-Youth-Impact-Hub) — `src/trees/`, `src/pages/TreeMonitoring.jsx`, `src/pages/PublicTree.jsx` and `supabase/migrations/20261016000000_tree_monitor.sql`
+>
+> This repository is kept for reference only. The old frontend now redirects to the website, and the exhibition-mode login bypass has been removed from the backend. Don't deploy the backend: it isn't used and its database was never populated.
+>
+> **What carried over:** the data model below (sites, plots, locked baselines, nurseries and batches, trees with GPS and QR codes, check-ins with photos, an audit log). PostGIS is replaced by plain latitude/longitude columns and GeoJSON plot boundaries. Accounts are UYIH member logins, and only adult members on the field team can use the app. Children and Girl Guides never get accounts.
+
+---
+
+## Original README
+
+
 Web app for **Umoja Youth Impact Hub** to monitor trees from nursery → planting → long-term survival, with data structured for eventual Plan Vivo / Verra / Kenya NEMA carbon-credit certification.
 
 ## Current status
